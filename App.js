@@ -9,49 +9,13 @@ const displayCoverURL = "https://uploads.mangadex.org//covers/";
 
 
 const App = () => {
-  const [status, setStatus] = useState("");
-  const [cover, setCover] = useState("");
-  const [coverId, setCoverId] = useState("")
-  const [titleId, setTitleId] = useState("")
-
-  const getCover = () => {
-    fetch(coverURL + coverId, {
-      method: 'GET',
-      'Content-Type': 'application/json'
-    })
-    .then((response) => response.json())
-    .then((json) => {
-      console.log(json.data.attributes.fileName)
-      setCover(json.data.attributes.fileName)
-    })
-    .catch((error) => console.log(error));
-  }
-
-  const getCoverId = () =>{
-    fetch(mangaURL,{
-      method: 'GET',
-      'Content-Type': 'application/json'
-    })
-    .then((response) => response.json())
-    .then((json) => {
-      console.log(json.data.relationships[2].id);
-      // setCover(json.data[9].attributes.fileName);
-      setCoverId(json.data.relationships[2].id);
-      setTitleId(json.data.id);
-      getCover();
-    })
-    .catch((error) => console.log(error));
-  }
+  const [status, setStatus] = useState("Home");
   
   return (
     <View style={styles.container}>
       <Header header={status}/>
-        <Image source={{uri: displayCoverURL + titleId + "/" + cover}} style={StyleSheet.create({
-          width: 180,
-          height: 270,
-          borderRadius: 5
-        })}></Image>
-      <NavBar toLibrary={() => setStatus("Library")} toHome={() => setStatus("Home")} toSearch={getCoverId}/>
+      <Content />
+      <NavBar toLibrary={() => setStatus("Library")} toHome={() => setStatus("Home")} toSearch={() => setStatus("Search")}/>
     </View>
   );
 }
@@ -106,8 +70,44 @@ const Header = (props) => {
 }
 
 const Content = () => {
+  const [coverFile, setCoverFile] = useState("");
+  const [coverId, setCoverId] = useState("")
+  const [titleId, setTitleId] = useState("")
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+      fetch(mangaURL,{
+        method: 'GET',
+        'Content-Type': 'application/json'
+      })
+      .then((response) => response.json())
+      .then((json) => {
+        setCoverId(json.data.relationships[2].id);
+        setTitleId(json.data.id);
+        setTitle(json.data.attributes.altTitles[0].en)
+        fetch(coverURL + coverId, {
+          method: 'GET',
+          'Content-Type': 'application/json'
+        })
+        .then((response) => response.json())
+        .then((json) => {
+          setCoverFile(json.data.attributes.fileName)
+        })
+        .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
+    
+  })
+
   return (
-    <View></View>
+    <View>
+      <Image source={{uri: displayCoverURL + titleId + "/" + coverFile}}    style={StyleSheet.create({
+          width: 180,
+          height: 270,
+          borderRadius: 5
+        })}></Image>
+      <Text style={styles.seriesTitle}>{title}</Text>
+    </View>
   )
 }
 
@@ -154,6 +154,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     left: 0,
     fontSize: 30
+  },
+  seriesTitle: {
+    color: 'white',
+    fontSize: 17,
+    fontFamily: 'monospace',
+    fontWeight: 'bold'
   }
 });
 

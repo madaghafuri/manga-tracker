@@ -97,7 +97,7 @@ const Content = () => {
       })
       .catch((error) => console.log(error));
     
-  })
+  }, [])
 
   return (
     <View>

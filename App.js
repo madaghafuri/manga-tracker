@@ -85,6 +85,7 @@ const Content = () => {
         setCoverId(json.data.relationships[2].id);
         setTitleId(json.data.id);
         setTitle(json.data.attributes.altTitles[0].en)
+        console.log('coverid, titleid, & title obtained')
         fetch(coverURL + coverId, {
           method: 'GET',
           'Content-Type': 'application/json'
@@ -92,10 +93,15 @@ const Content = () => {
         .then((response) => response.json())
         .then((json) => {
           setCoverFile(json.data.attributes.fileName)
+          console.log('coverFile obtained')
         })
         .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error));
+
+      return () => {
+        console.log('api cleaned')
+      }
     
   }, [])
 

@@ -10,12 +10,18 @@ const displayCoverURL = "https://uploads.mangadex.org//covers/";
 
 const App = () => {
   const [status, setStatus] = useState("Home");
+
+  // const displaySearch = () => {
+    
+  // }
   
   return (
     <View style={styles.container}>
       <Header header={status}/>
       <Content />
-      <NavBar toLibrary={() => setStatus("Library")} toHome={() => setStatus("Home")} toSearch={() => setStatus("Search")}/>
+      <NavBar toLibrary={() => setStatus("Library")} toHome={() => setStatus("Home")} toSearch={() => {
+        setStatus("Search")
+      }}/>
     </View>
   );
 }
@@ -71,38 +77,34 @@ const Header = (props) => {
 
 const Content = () => {
   const [coverFile, setCoverFile] = useState("");
-  const [coverId, setCoverId] = useState("")
   const [titleId, setTitleId] = useState("")
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-      fetch(mangaURL,{
+    fetch(mangaURL,{
+      method: 'GET',
+      'Content-Type': 'application/json'
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      const coverId = json.data.relationships[2].id;
+      const titleId = json.data.id;
+      setTitleId(titleId)
+      const seriesTitle = json.data.attributes.altTitles[0].en;
+      setTitle(seriesTitle)
+      console.log('coverid, titleid, & title obtained')
+      return fetch(coverURL + coverId, {
         method: 'GET',
         'Content-Type': 'application/json'
       })
-      .then((response) => response.json())
-      .then((json) => {
-        setCoverId(json.data.relationships[2].id);
-        setTitleId(json.data.id);
-        setTitle(json.data.attributes.altTitles[0].en)
-        console.log('coverid, titleid, & title obtained')
-        fetch(coverURL + coverId, {
-          method: 'GET',
-          'Content-Type': 'application/json'
-        })
-        .then((response) => response.json())
-        .then((json) => {
-          setCoverFile(json.data.attributes.fileName)
-          console.log('coverFile obtained')
-        })
-        .catch((error) => console.log(error));
-      })
-      .catch((error) => console.log(error));
-
-      return () => {
-        console.log('api cleaned')
-      }
-    
+    })
+    .then(response => response.json())
+    .then((json) => {
+      const coverFile = json.data.attributes.fileName
+      setCoverFile(coverFile)
+      console.log('coverFile obtained')
+    })
+    .catch(error => console.log(error))
   }, [])
 
   return (

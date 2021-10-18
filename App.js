@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View,  SafeAreaView, Image, TouchableHighlight, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, FlatList, Pressable } from 'react-native';
 
 const mangaURL = "https://api.mangadex.org/manga/8f8b7cb0-7109-46e8-b12c-0448a6453dfa";
 const coverURL = "https://api.mangadex.org/cover/"
@@ -11,56 +11,68 @@ const displayCoverURL = "https://uploads.mangadex.org//covers/";
 const App = () => {
   const [status, setStatus] = useState("Home");
 
-  // const displaySearch = () => {
-    
-  // }
+  const displaySearch = () => {
+    fetch('https://api.mangadex.org/manga',{
+      method: 'GET',
+      'Content-Type': 'application/json'
+    })
+    .then(response => response.json())
+    .then((json) => {
+      console.log(json.data[10])
+    })
+    .catch(error => console.log(error));
+  }
   
   return (
     <View style={styles.container}>
       <Header header={status}/>
       <Content />
-      <NavBar toLibrary={() => setStatus("Library")} toHome={() => setStatus("Home")} toSearch={() => {
-        setStatus("Search")
-      }}/>
+      <NavBar toLibrary={() => setStatus("Library")} toHome={() => setStatus("Home")} toSearch={() => setStatus("Search")}/>
     </View>
   );
 }
 
 const NavBar = (props) => {
-
+    const [selected, setSelected] = useState('')
+    
+    const changeColor = () => {
+      
+    }
 
     return (
       <View style={[styles.containerNavBar, styles.flexRow]}>
         <View style={styles.flexColumn}>
-          <TouchableHighlight underlayColor={'gray'} onPress={props.toLibrary} style={StyleSheet.create({
-            borderRadius: 5,
-          })}>
+          <TouchableHighlight underlayColor={'gray'} onPress={() => setSelected('Library')} style={{borderRadius: 5}}>
             <Image 
-            style={styles.tinyIcon}
+            style={selected === 'Library' ? {
+              width: 28,
+              height: 28,
+              tintColor: '#1e68b3'
+            } : styles.tinyIcon}
             source={{uri: 'https://cdn.discordapp.com/attachments/776395062233923626/897737152727748608/unknown.png'}}></Image>
           </TouchableHighlight>
-          <Text>Library</Text>
+          <Text style={selected === 'Library' ? {color: '#1e68b3'} : {color: '#a6a5ad'}}>Library</Text>
         </View>
         <View style={styles.flexColumn}>
-          <TouchableHighlight underlayColor={'gray'} onPress={props.toHome} style={StyleSheet.create({
-            borderRadius: 5,
-          })}>
+          <TouchableHighlight underlayColor={'gray'} onPress={() => setSelected('Home')} style={{borderRadius: 5}}>
             <Image 
-            style={styles.tinyIcon} 
+            style={selected === 'Home' ? {
+              width: 28,
+              height: 28,
+              tintColor: '#1e68b3'
+            } : styles.tinyIcon} 
             source={require('./assets/homeIcon.png')}
             ></Image>
           </TouchableHighlight>
-          <Text>Home</Text>
+          <Text style={selected === 'Home' ? {color: '#1e68b3'} : {color: '#a6a5ad'}}>Home</Text>
         </View>
         <View style={styles.flexColumn}>
-          <TouchableHighlight underlayColor={'gray'} onPress={props.toSearch} style={StyleSheet.create({
-            borderRadius: 5,
-          })}>
+          <TouchableHighlight underlayColor={'gray'} style={{borderRadius: 5}}>
             <Image 
             style={styles.tinyIcon}
             source={require('./assets/loupe.png')}></Image>
           </TouchableHighlight>
-          <Text>Search</Text>
+          <Text style={{color: '#a6a5ad'}}>Search</Text>
         </View>
       </View>
     )
@@ -109,11 +121,13 @@ const Content = () => {
 
   return (
     <View>
-      <Image source={{uri: displayCoverURL + titleId + "/" + coverFile}}    style={StyleSheet.create({
+      <Pressable >
+      <Image source={{uri: displayCoverURL + titleId + "/" + coverFile + ".512.jpg"}}    style={StyleSheet.create({
           width: 180,
           height: 270,
-          borderRadius: 5
+          borderRadius: 5,
         })}></Image>
+      </Pressable>
       <Text style={styles.seriesTitle}>{title}</Text>
     </View>
   )
@@ -122,21 +136,22 @@ const Content = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#394352',
+    backgroundColor: '#323236',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   tinyIcon: {
     width: 28,
-    height: 28
+    height: 28,
+    tintColor: '#a6a5ad'
   },
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
     padding: 10,
-    bottom: 0
+    bottom: 0,
   },
   flexColumn: {
     flexDirection: 'column',
@@ -146,7 +161,6 @@ const styles = StyleSheet.create({
   },
   containerNavBar: {
     flex: 1,
-    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -154,11 +168,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 25,
     padding: 10,
-    backgroundColor: 'white',
     width: '100%',
   },
   headerText: {
-    color: 'black',
+    color: '#a6a5ad',
     position: 'relative',
     left: 0,
     fontSize: 30

@@ -32,47 +32,31 @@ const App = () => {
   );
 }
 
-const NavBar = (props) => {
-    const [selected, setSelected] = useState('')
+const NavBar = ({
+  
+}) => {
+    const [selected, setSelected] = useState('Home');
+    const selectedColor = '#007AFF'
     
-    const changeColor = () => {
-      
-    }
-
     return (
-      <View style={[styles.containerNavBar, styles.flexRow]}>
-        <View style={styles.flexColumn}>
-          <TouchableHighlight underlayColor={'gray'} onPress={() => setSelected('Library')} style={{borderRadius: 5}}>
-            <Image 
-            style={selected === 'Library' ? {
-              width: 28,
-              height: 28,
-              tintColor: '#1e68b3'
-            } : styles.tinyIcon}
-            source={{uri: 'https://cdn.discordapp.com/attachments/776395062233923626/897737152727748608/unknown.png'}}></Image>
+      <View style={styles.navBarContainer}>
+        <View style={styles.navBarIconContainer}>
+          <TouchableHighlight onPress={() => {setSelected('Library')}}>
+            <Image source={{uri: 'https://cdn.discordapp.com/attachments/776395062233923626/897737152727748608/unknown.png'}} style={selected == 'Library' ? styles.navBarIconSelected : styles.navBarIcon}></Image>
           </TouchableHighlight>
-          <Text style={selected === 'Library' ? {color: '#1e68b3'} : {color: '#a6a5ad'}}>Library</Text>
+          <Text style={selected == 'Library' ? {color:selectedColor} : {color: '#a6a5ad'}}>Library</Text>
         </View>
-        <View style={styles.flexColumn}>
-          <TouchableHighlight underlayColor={'gray'} onPress={() => setSelected('Home')} style={{borderRadius: 5}}>
-            <Image 
-            style={selected === 'Home' ? {
-              width: 28,
-              height: 28,
-              tintColor: '#1e68b3'
-            } : styles.tinyIcon} 
-            source={require('./assets/homeIcon.png')}
-            ></Image>
+        <View style={styles.navBarIconContainer}>
+          <TouchableHighlight onPress={() => {setSelected('Home')}}>
+            <Image source={{uri: 'https://cdn.discordapp.com/attachments/776395062233923626/897411587672014858/unknown.png'}} style={selected == 'Home' ? styles.navBarIconSelected : styles.navBarIcon}></Image>
           </TouchableHighlight>
-          <Text style={selected === 'Home' ? {color: '#1e68b3'} : {color: '#a6a5ad'}}>Home</Text>
+          <Text style={selected == 'Home' ? {color:selectedColor} : {color: '#a6a5ad'}}>Home</Text>
         </View>
-        <View style={styles.flexColumn}>
-          <TouchableHighlight underlayColor={'gray'} style={{borderRadius: 5}}>
-            <Image 
-            style={styles.tinyIcon}
-            source={require('./assets/loupe.png')}></Image>
+        <View style={styles.navBarIconContainer}>
+          <TouchableHighlight onPress={() => {setSelected('Search')}}>
+            <Image source={require('./assets/loupe.png')} style={selected == 'Search' ? styles.navBarIconSelected : styles.navBarIcon}></Image>
           </TouchableHighlight>
-          <Text style={{color: '#a6a5ad'}}>Search</Text>
+          <Text style={selected == 'Search' ? {color:selectedColor} : {color: '#a6a5ad'}}>Search</Text>
         </View>
       </View>
     )
@@ -87,7 +71,7 @@ const Header = (props) => {
   )
 }
 
-const Content = () => {
+const Content = (props) => {
   const [coverFile, setCoverFile] = useState("");
   const [titleId, setTitleId] = useState("")
   const [title, setTitle] = useState("");
@@ -120,7 +104,11 @@ const Content = () => {
   }, [])
 
   return (
-    <View>
+    <View style={{
+      // alignItems: 'center',
+      padding: 10,
+      backgroundColor: 'black',
+    }}>
       <Pressable >
       <Image source={{uri: displayCoverURL + titleId + "/" + coverFile + ".512.jpg"}}    style={StyleSheet.create({
           width: 180,
@@ -141,34 +129,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
   },
-  tinyIcon: {
-    width: 28,
-    height: 28,
-    tintColor: '#a6a5ad'
-  },
-  flexRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'absolute',
-    padding: 10,
-    bottom: 0,
-  },
-  flexColumn: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingLeft: 50,
-    paddingRight: 50,
-  },
-  containerNavBar: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   headerContainer: {
     position: 'absolute',
     top: 25,
     padding: 10,
     width: '100%',
+    flex: 1
   },
   headerText: {
     color: '#a6a5ad',
@@ -181,7 +147,32 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'monospace',
     fontWeight: 'bold'
-  }
+  },
+  navBarContainer: {
+    position: 'absolute',
+    display: 'flex',
+    bottom: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 10,
+    justifyContent: 'space-around',
+    width: '100%',
+    flex: 1
+  },
+  navBarIcon: {
+    width: 28,
+    height: 28,
+    tintColor: '#a6a5ad'
+  },
+  navBarIconContainer: {
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  navBarIconSelected: {
+    width: 28,
+    height: 28,
+    tintColor: '#007AFF'
+  },
 });
 
 export default App;

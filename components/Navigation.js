@@ -15,7 +15,7 @@ const NavTool = (props) => {
 const styles = StyleSheet.create({
   navBarIconContainer: {
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   navBarIcon: {
     width: 28,

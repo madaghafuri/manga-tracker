@@ -18,14 +18,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'monospace',
     fontWeight: 'bold',
+    maxWidth: '80%',
   },
   seriesCover: {
     width: 180,
     height: 270,
+    maxWidth: 180,
+    maxHeight: 270,
     borderRadius: 5
   },
   seriesContainer: {
-    padding: 10,
+    padding: 0,
+    maxWidth: 180,
+    marginBottom: 10
   }
 });
 

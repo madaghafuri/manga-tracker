@@ -65,7 +65,8 @@ const Content = (props) => {
     {image: 'https://uploads.mangadex.org//covers/077a3fed-1634-424f-be7a-9a96b7f07b78/52c4a943-9c8d-4487-83dc-4bec977ba10c.jpg', namae: 'Kingdom'},
     {image: 'https://uploads.mangadex.org//covers/ce7cd7b0-e595-4f0d-98e8-447da10d652d/a6ff599f-17d3-440f-a595-fb31e932a421.jpg', namae: 'Mission: Yozakura Family'},
     {image: 'https://uploads.mangadex.org//covers/d1a9fdeb-f713-407f-960c-8326b586e6fd/dcfe20c2-fdf6-4594-9621-59a43e4b5a0e.jpg', namae: 'Vagabond'},
-    {image: 'https://uploads.mangadex.org//covers/b0b721ff-c388-4486-aa0f-c2b0bb321512/cec6eea3-7c16-4c0a-8b76-4a3f78f5b8f3.jpg', namae: 'Sousou no Frieren'}
+    {image: 'https://uploads.mangadex.org//covers/b0b721ff-c388-4486-aa0f-c2b0bb321512/cec6eea3-7c16-4c0a-8b76-4a3f78f5b8f3.jpg', namae: 'Sousou no Frieren'},
+    {image: 'https://uploads.mangadex.org//covers/319df2e2-e6a6-4e3a-a31c-68539c140a84/4d102eba-387b-4b72-94a0-1dd78aba271f.jpg', namae: 'Slam Dunk'}
   ]
 
   useEffect(() => {
@@ -99,38 +100,39 @@ const Content = (props) => {
     .catch(error => console.log(error))
   }, [])
   return (
-      <ScrollView style={{
-      paddingTop: 10,
-      paddingBottom: 10,
-      width: '100%',
-      maxHeight: '80%',
-    }} contentContainerStyle={{width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around'}} >
-      <Card coverLink={displayCoverURL + titleId + "/" + coverFile} seriesTitle={title}></Card>
-      {dataList.map((item, index) => {
-        return(
-          <Card coverLink={item.image} seriesTitle={item.namae} key={index}></Card>
-        )
-      })}
+      <View style={{
+        width: '100%',
+        maxHeight: '86%',
+        flex: 8
+      }}>
+        <ScrollView contentContainerStyle={{ flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-around'}}>
+          <Card coverLink={displayCoverURL + titleId + "/" + coverFile} seriesTitle={title}></Card>
+          {dataList.map((item, index) => {
+            return(
+              <Card coverLink={item.image} seriesTitle={item.namae} key={index}></Card>
+            )
+          })}
     </ScrollView>
+      </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#323236',
+    backgroundColor: '#262625',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
+    flex: 1
   },
   headerContainer: {
     position: 'absolute',
-    top: 20,
+    top: 50,
     padding: 10,
     width: '100%',
-    flex: 1,
     zIndex: 1,
-    backgroundColor: '#323236'
+    backgroundColor: '#262625',
+    flex: 1
   },
   headerText: {
     color: '#a6a5ad',
@@ -150,11 +152,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     flexDirection: 'row',
-    padding: 10,
+    paddingBottom: 2,
     justifyContent: 'space-around',
     width: '100%',
-    flex: 1,
-    backgroundColor: '#323236'
+    flex: 1
   },
   navBarIcon: {
     width: 28,
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
   },
   navBarIconContainer: {
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   navBarIconSelected: {
     width: 28,

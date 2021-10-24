@@ -18,13 +18,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navBarIcon: {
-    width: 28,
-    height: 28,
+    width: 20,
+    height: 20,
     tintColor: '#a6a5ad'
   },
   navBarIconSelected: {
-    width: 28,
-    height: 28,
+    width: 20,
+    height: 20,
     tintColor: '#007AFF'
   },
 })
